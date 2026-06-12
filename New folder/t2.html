@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<title>Bư.exe VN💖</title>
+<link rel="icon" href="bu.ico" type="image/x-icon" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+body {
+  font-family: 'Orbitron', Arial, sans-serif;
+  background: linear-gradient(135deg, #0b0b0b, #1c1c1c);
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+/* Logo */
+.logo {
+  width: 120px;
+  height: 120px;
+  margin: 20px auto;
+  border-radius: 50%;
+  background: url('bu.ico') no-repeat center center;
+  background-size: cover;
+  box-shadow: 0 0 15px #fff;
+  transition: box-shadow 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+.logo:hover {
+  box-shadow: 0 0 30px #fff, 0 0 60px #00ffff88;
+  transform: scale(1.1);
+}
+
+/* Header */
+h1 { margin-top: 10px; font-size: 2.5em; color: #00ffff; text-shadow: 0 0 10px #00ffff; }
+
+/* Links */
+.links { margin-top: 30px; }
+.link-btn {
+  position: relative;
+  display: block;
+  width: 80%;
+  max-width: 320px;
+  margin: 12px auto;
+  padding: 15px 15px 15px 50px;
+  border-radius: 12px;
+  background-color: #111;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1em;
+  text-align: center;
+  box-shadow: 0 0 8px #fff;
+  border: 2px solid #fff;
+  transition: all 0.3s ease;
+}
+.link-btn:hover {
+  background-color: #fff; color: #000;
+  box-shadow: 0 0 20px #fff, 0 0 40px #ccc; 
+  transform: scale(1.05);
+}
+.link-btn img.icon {
+  position: absolute; left: 15px; top: 50%;
+  transform: translateY(-50%);
+  width: 28px; height: 28px;
+  filter: drop-shadow(0 0 2px #fff);
+}
+
+/* Back button */
+.back-btn-container { text-align: center; margin: 30px 0; }
+.back-btn {
+  display: inline-block; padding: 12px 25px;
+  background-color: #111; color: #fff;
+  border: 2px solid #fff; border-radius: 8px;
+  font-weight: bold; text-decoration: none;
+  transition: all 0.3s ease;
+}
+.back-btn:hover { background-color: #fff; color: #000; box-shadow: 0 0 20px #fff, 0 0 40px #ccc; transform: scale(1.05); }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 20px; left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background-color: #fff; color: #000;
+  padding: 10px 20px; border-radius: 8px;
+  box-shadow: 0 0 10px #fff; font-weight: bold;
+  opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 9999;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+
+/* Footer giống T5 */
+.footer { 
+  margin-top: 40px; 
+  font-size: 0.9em; 
+  color: #aaa; 
+  text-align: center;
+}
+.footer .social-links a { 
+  color: #fff; 
+  margin: 0 10px; 
+  text-decoration: none; 
+  font-size: 1.2em;
+  transition: all 0.3s ease; 
+}
+.footer .social-links a:hover { 
+  color: #00ffff;  
+  text-shadow: 0 0 8px #00ffff, 0 0 16px #00ffff;
+}
+.footer p {
+  margin-top: 8px;
+  color: #aaa;
+}
+
+/* Responsive */
+@media(max-width:600px){
+  h1 { font-size: 1.8em; }
+  .link-btn { width: 100%; padding: 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="logo"></div>
+<h1>Bư.exe💖</h1>
+
+<div class="links" id="linksContainer">
+  <!-- Nút copy mã cố định -->
+  <a class="link-btn" href="javascript:void(0)" onclick="copyText('#FFHUDT6O3jqTZYrlPo7eM')">
+    <img src="txt.png" class="icon" alt="icon" />
+    <span>Copy mã setting trong game</span>
+  </a>
+</div>
+
+<div class="back-btn-container">
+  <a href="index.html" class="back-btn">← Quay lại</a>
+</div>
+
+<div class="toast" id="toast">Đang tải...</div>
+
+<script>
+const GITHUB_JSON = "https://raw.githubusercontent.com/ZOKOTV/download-files/refs/heads/main/ffpc.json?t=" + new Date().getTime();
+
+function getIcon(item){
+  if(item.ext){
+    const e = item.ext.toLowerCase();
+    if(e === "reg") return "reg.png";
+    if(e === "bat") return "bat.png";
+    if(e === "txt") return "txt.png";
+    if(e === "msi") return "msi.png";
+  }
+  return null;
+}
+
+fetch(GITHUB_JSON)
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById("linksContainer");
+    data.forEach(item => {
+      const a = document.createElement("a");
+      a.className = "link-btn";
+
+      let icon = getIcon(item);
+      let iconHTML = icon ? `<img src="${icon}" class="icon" alt="icon">` : "";
+
+      let downloadUrl = item.url;
+      if(downloadUrl.includes("drive.google.com")){
+        const idMatch = downloadUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        if(idMatch) downloadUrl = `https://drive.google.com/uc?export=download&id=${idMatch[1]}`;
+      }
+
+      a.href = downloadUrl;
+      a.download = item.name || "file";
+      a.target = "_self";
+      a.innerHTML = `${iconHTML}<span>${item.name}</span>`;
+      container.appendChild(a);
+    });
+  })
+  .catch(err => console.error("Không tải được JSON:", err));
+
+function copyText(text){
+  navigator.clipboard.writeText(text)
+    .then(()=>showToast("✅ Đã sao chép mã setting trong game!"))
+    .catch(()=>showToast("❌ Không thể sao chép mã!"));
+}
+
+function showToast(message){
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  requestAnimationFrame(()=>toast.classList.add("show"));
+  setTimeout(()=>{
+    toast.classList.remove("show");
+    setTimeout(()=>document.body.removeChild(toast),300);
+  },2500);
+}
+
+// Logo click về index.html
+document.querySelector('.logo').addEventListener('click', () => {
+  window.location.href = 'index.html';
+});
+</script>
+
+<!-- Footer giống T5/T3 -->
+<div class="footer">
+  <div class="social-links">
+    <a href="https://www.tiktok.com/@buexe4" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
+    <a href="https://www.youtube.com/@zokotvcn" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
+    <a href="https://www.facebook.com/doi.tran.510812/?locale=vi_VN" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="https://anotepad.com/notes/k452996b"><i class="fas fa-envelope"></i> Email</a>
+  </div>
+  <p>© 2025 - All FILES - DPI MOUSE 800-1600 - Web này chỉ dành cho PC</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="icon.png">
+<title>Trandoi - File học tập</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+body {
+  font-family: 'Orbitron', Arial, sans-serif;
+  background: linear-gradient(135deg, #0b0b0b, #1c1c1c);
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+}
+/*footer*/
+.footer { 
+  margin-top: 40px; 
+  font-size: 0.9em; 
+  color: #aaa; 
+  text-align: center; 
+}
+.footer .social-links {
+  margin-bottom: 10px;
+}
+.footer .social-links a {
+  color: #fff;
+  margin: 0 10px;
+  text-decoration: none;
+  font-size: 1.2em;
+  transition: color 0.3s;
+}
+.footer .social-links a:hover {
+  color: #1e90ff;
+}
+
+
+/* Logo */
+.logo {
+  width: 120px;
+  height: 120px;
+  margin: 20px auto;
+  border-radius: 50%;
+  background: url('icon.png') no-repeat center center;
+  background-size: cover;
+  box-shadow: 0 0 15px #fff;
+  transition: box-shadow 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+.logo:hover {
+  box-shadow: 0 0 30px #fff, 0 0 60px #ccc;
+  transform: scale(1.1);
+}
+
+/* Header */
+h1 { 
+  margin-top: 10px; 
+  font-size: 2.5em; 
+  color: #fff; 
+  text-shadow: 0 0 12px #fff; 
+}
+
+/* Login form */
+#loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: #1e1e1e;
+  padding: 30px 25px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #fff;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+}
+#loginForm input[type="text"], 
+#loginForm input[type="password"] {
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid #fff;
+  background: #0b0b0b;
+  color: #fff;
+  font-size: 1em;
+  outline: none;
+}
+#loginForm input[type="submit"],
+#backBtn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid #fff;
+  background: #1e1e1e;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+#loginForm input[type="submit"]:hover,
+#backBtn:hover {
+  background: #fff;
+  color: #0b0b0b;
+  box-shadow: 0 0 15px #fff;
+}
+
+/* File grid */
+.container { max-width: 1200px; margin: 30px auto; padding: 0 15px; display: none; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+  gap: 20px;
+}
+.card {
+  background: #111;
+  border-radius: 12px;
+  box-shadow: 0 0 12px #444;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  transition: all 0.3s;
+  border: 2px solid #444;
+}
+.card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 0 25px #fff, 0 0 40px #ccc;
+  border-color: #fff;
+}
+.filename {
+  font-weight: bold;
+  font-size: 16px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-shadow: 0 0 6px #ccc;
+}
+.filename i { font-size: 18px; color: #fff; }
+.download-btn {
+  display: inline-block;
+  padding: 12px 15px;
+  background-color: #111;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 14px;
+  box-shadow: 0 0 8px #fff;
+  transition: all 0.3s ease;
+}
+.download-btn:hover {
+  background-color: #fff;
+  color: #000;
+  box-shadow: 0 0 20px #fff, 0 0 40px #ccc;
+  transform: scale(1.05);
+}
+
+/* Logout / Cook button */
+.logout-btn {
+  display: inline-block;
+  padding: 12px 25px;
+  margin: 20px auto;
+  background-color: #111;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.logout-btn:hover {
+  background-color: #fff;
+  color: #000;
+  box-shadow: 0 0 20px #fff, 0 0 40px #ccc;
+  transform: scale(1.05);
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background-color: #fff;
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #fff;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 9999;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+
+/* Responsive */
+@media(max-width:600px){
+  h1 { font-size: 1.8em; }
+  .card { padding: 14px; }
+  .download-btn { width: 100%; padding: 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="logo"></div>
+<h1>Mày cần phải đăng nhập!!!</h1>
+
+<!-- Login Form -->
+<form id="loginForm" autocomplete="off">
+  <input type="text" id="username" placeholder="Tên đăng nhập" required autocomplete="off">
+  <input type="password" id="password" placeholder="Mật khẩu" required autocomplete="off">
+  <input type="submit" value="Đăng nhập">
+
+  <!-- Nút Quay lại -->
+  <button type="button" id="backBtn">⬅ Quay lại</button>
+</form>
+
+<!-- File Container -->
+<div class="container" id="fileContainer">
+  <div class="grid" id="file-grid"></div>
+  <button class="logout-btn" onclick="window.location.href='index.html'">Cook</button>
+</div>
+
+<div class="toast" id="toast">Đang tải...</div>
+
+<script>
+// Tài khoản hợp lệ
+const accounts = [
+  { username: "admin", password: "doi12c1" },
+  { username: "doi", password: "2008" },
+  { username: "12c1", password: "12" },
+  { username: "khang", password: "1903" },
+  { username: "tramm", password: "2002" },
+  { username: "trandoi", password: "2008" }
+];
+
+// Login form
+document.getElementById("loginForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const valid = accounts.some(acc => acc.username === username && acc.password === password);
+
+    if(valid){
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("fileContainer").style.display = "block";
+        
+        const header = document.querySelector("h1");
+        header.textContent = `✌️ Xin chào, ${username}!`;
+        let prompt = document.createElement("p");
+        prompt.textContent = "Bạn cần gì?";
+        prompt.style.fontSize = "1.5em";
+        prompt.style.color = "#fff";
+        prompt.style.textShadow = "0 0 10px #fff, 0 0 20px #fff";
+        prompt.style.textAlign = "center";
+        prompt.style.marginTop = "10px";
+        header.insertAdjacentElement("afterend", prompt);
+
+        document.title = `Cảm ơn ${username} - đã đăng nhập`;
+
+        loadFiles();
+    } else {
+        alert("Tên đăng nhập hoặc mật khẩu không đúng!");
+    }
+});
+
+// Nút Quay lại
+document.getElementById("backBtn").addEventListener("click", () => {
+    window.location.href = "index.html";
+});
+
+// Load files
+async function loadFiles() {
+  const jsonURL = "https://raw.githubusercontent.com/ZOKOTV/download-files/refs/heads/main/hoctap.json?t=" + new Date().getTime();
+  try {
+    const res = await fetch(jsonURL);
+    const files = await res.json();
+    const grid = document.getElementById("file-grid");
+    grid.innerHTML = "";
+
+    files.forEach(file => {
+      const card = document.createElement("div");
+      card.className = "card";
+      const nameDiv = document.createElement("div");
+      nameDiv.className = "filename";
+      nameDiv.innerHTML = `<i class="fas fa-file-alt"></i> ${file.name}`;
+      const downloadLink = document.createElement("a");
+      downloadLink.className = "download-btn";
+      downloadLink.href = file.url;
+      downloadLink.download = "";
+      downloadLink.target = "_blank";
+      downloadLink.textContent = "⬇ Tải xuống";
+      card.appendChild(nameDiv);
+      card.appendChild(downloadLink);
+      grid.appendChild(card);
+    });
+  } catch (err) {
+    console.error("Không tải được JSON:", err);
+    document.getElementById("file-grid").innerHTML = "<p style='color:red;'>⚠ Không tải được danh sách file!</p>";
+  }
+}
+
+// Logo click về index.html
+document.querySelector('.logo').addEventListener('click', () => {
+    window.location.href = 'index.html';
+});
+</script>
+  <p>© 2025 - Cre: Tran Van Doi - 12C1</p>
+</div>
+
+</body>
+</html>
