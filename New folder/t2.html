@@ -211,12 +211,34 @@ document.querySelector('.logo').addEventListener('click', () => {
 <div class="footer">
   <div class="social-links">
     <a href="https://www.tiktok.com/@buexe4" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
+    <a href="https://www.tiktok.com/@trandoii" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
     <a href="https://www.youtube.com/@zokotvcn" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
     <a href="https://www.facebook.com/doi.tran.510812/?locale=vi_VN" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
     <a href="https://anotepad.com/notes/k452996b"><i class="fas fa-envelope"></i> Email</a>
+    <!-- Email: copy trực tiếp, không chuyển trang -->
+    <a class="link-btn" onclick="copyText('trandoi459@gmail.com', '✅ Đã sao chép Email!')">
+      <i class="fas fa-envelope"></i> Email
+    </a>
   </div>
-  <p>© 2025 - All FILES - DPI MOUSE 800-1600 - Web này chỉ dành cho PC</p>
 </div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+function copyText(text, message) {
+  navigator.clipboard.writeText(text)
+    .then(() => showToast(message || "✅ Đã sao chép!"))
+    .catch(() => showToast("❌ Không thể sao chép!"));
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+</script>
 
 </body>
 </html>
