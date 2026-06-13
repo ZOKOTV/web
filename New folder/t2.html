@@ -58,10 +58,11 @@ h1 { margin-top: 10px; font-size: 2.5em; color: #00ffff; text-shadow: 0 0 10px #
   box-shadow: 0 0 8px #fff;
   border: 2px solid #fff;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 .link-btn:hover {
   background-color: #fff; color: #000;
-  box-shadow: 0 0 20px #fff, 0 0 40px #ccc; 
+  box-shadow: 0 0 20px #fff, 0 0 40px #ccc;
   transform: scale(1.05);
 }
 .link-btn img.icon {
@@ -91,25 +92,47 @@ h1 { margin-top: 10px; font-size: 2.5em; color: #00ffff; text-shadow: 0 0 10px #
   box-shadow: 0 0 10px #fff; font-weight: bold;
   opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease;
   z-index: 9999;
+  pointer-events: none;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
 
-/* Footer giống T5 */
-.footer { 
-  margin-top: 40px; 
-  font-size: 0.9em; 
-  color: #aaa; 
+/* Footer */
+.footer {
+  margin-top: 40px;
+  font-size: 0.9em;
+  color: #aaa;
   text-align: center;
 }
-.footer .social-links a { 
-  color: #fff; 
-  margin: 0 10px; 
-  text-decoration: none; 
-  font-size: 1.2em;
-  transition: all 0.3s ease; 
+.footer .social-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 8px;
 }
-.footer .social-links a:hover { 
-  color: #00ffff;  
+.footer .social-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2em;
+  transition: all 0.3s ease;
+}
+.footer .social-links a:hover {
+  color: #00ffff;
+  text-shadow: 0 0 8px #00ffff, 0 0 16px #00ffff;
+}
+/* Email button in footer — styled like a plain link, not .link-btn */
+.footer .email-btn {
+  color: #fff;
+  background: none;
+  border: none;
+  font-family: 'Orbitron', Arial, sans-serif;
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+.footer .email-btn:hover {
+  color: #00ffff;
   text-shadow: 0 0 8px #00ffff, 0 0 16px #00ffff;
 }
 .footer p {
@@ -131,7 +154,7 @@ h1 { margin-top: 10px; font-size: 2.5em; color: #00ffff; text-shadow: 0 0 10px #
 
 <div class="links" id="linksContainer">
   <!-- Nút copy mã cố định -->
-  <a class="link-btn" href="javascript:void(0)" onclick="copyText('#FFHUDT6O3jqTZYrlPo7eM')">
+  <a class="link-btn" href="javascript:void(0)" onclick="copyText('#FFHUDT6O3jqTZYrlPo7eM', '✅ Đã sao chép mã setting trong game!')">
     <img src="txt.png" class="icon" alt="icon" />
     <span>Copy mã setting trong game</span>
   </a>
@@ -141,18 +164,19 @@ h1 { margin-top: 10px; font-size: 2.5em; color: #00ffff; text-shadow: 0 0 10px #
   <a href="index.html" class="back-btn">← Quay lại</a>
 </div>
 
-<div class="toast" id="toast">Đang tải...</div>
+<!-- Single toast element -->
+<div class="toast" id="toast"></div>
 
 <script>
 const GITHUB_JSON = "https://raw.githubusercontent.com/ZOKOTV/download-files/refs/heads/main/ffpc.json?t=" + new Date().getTime();
 
-function getIcon(item){
-  if(item.ext){
+function getIcon(item) {
+  if (item.ext) {
     const e = item.ext.toLowerCase();
-    if(e === "reg") return "reg.png";
-    if(e === "bat") return "bat.png";
-    if(e === "txt") return "txt.png";
-    if(e === "msi") return "msi.png";
+    if (e === "reg") return "reg.png";
+    if (e === "bat") return "bat.png";
+    if (e === "txt") return "txt.png";
+    if (e === "msi") return "msi.png";
   }
   return null;
 }
@@ -169,9 +193,9 @@ fetch(GITHUB_JSON)
       let iconHTML = icon ? `<img src="${icon}" class="icon" alt="icon">` : "";
 
       let downloadUrl = item.url;
-      if(downloadUrl.includes("drive.google.com")){
+      if (downloadUrl.includes("drive.google.com")) {
         const idMatch = downloadUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-        if(idMatch) downloadUrl = `https://drive.google.com/uc?export=download&id=${idMatch[1]}`;
+        if (idMatch) downloadUrl = `https://drive.google.com/uc?export=download&id=${idMatch[1]}`;
       }
 
       a.href = downloadUrl;
@@ -183,22 +207,19 @@ fetch(GITHUB_JSON)
   })
   .catch(err => console.error("Không tải được JSON:", err));
 
-function copyText(text){
+// Single unified copyText (supports optional custom message)
+function copyText(text, message) {
   navigator.clipboard.writeText(text)
-    .then(()=>showToast("✅ Đã sao chép mã setting trong game!"))
-    .catch(()=>showToast("❌ Không thể sao chép mã!"));
+    .then(() => showToast(message || "✅ Đã sao chép!"))
+    .catch(() => showToast("❌ Không thể sao chép!"));
 }
 
-function showToast(message){
-  const toast = document.createElement("div");
-  toast.className = "toast";
-  toast.textContent = message;
-  document.body.appendChild(toast);
-  requestAnimationFrame(()=>toast.classList.add("show"));
-  setTimeout(()=>{
-    toast.classList.remove("show");
-    setTimeout(()=>document.body.removeChild(toast),300);
-  },2500);
+// Single unified showToast
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
 }
 
 // Logo click về index.html
@@ -207,37 +228,18 @@ document.querySelector('.logo').addEventListener('click', () => {
 });
 </script>
 
-<!-- Footer giống T5/T3 -->
+<!-- Footer -->
 <div class="footer">
   <div class="social-links">
     <a href="https://www.tiktok.com/@trandoii" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
     <a href="https://www.youtube.com/@zokotvcn" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
     <a href="https://www.facebook.com/doi.tran.510812/?locale=vi_VN" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
-    <!-- Email: copy trực tiếp, không chuyển trang -->
-    <a class="link-btn" onclick="copyText('trandoi459@gmail.com', '✅ Đã sao chép Email!')">
+    <button class="email-btn" onclick="copyText('trandoi459@gmail.com', '✅ Đã sao chép Email!')">
       <i class="fas fa-envelope"></i> Email
-    </a>
+    </button>
   </div>
-  <p>© 2025 - Cre: Tran Van Doi</p>
+  <p>© 2025 - Cre: Tran Van Doi - Chỉ dành cho pc</p>
 </div>
-
-<!-- Toast -->
-<div class="toast" id="toast"></div>
-
-<script>
-function copyText(text, message) {
-  navigator.clipboard.writeText(text)
-    .then(() => showToast(message || "✅ Đã sao chép!"))
-    .catch(() => showToast("❌ Không thể sao chép!"));
-}
-
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2500);
-}
-</script>
 
 </body>
 </html>
