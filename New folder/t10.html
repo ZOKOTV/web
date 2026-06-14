@@ -177,13 +177,6 @@ h1 {
   margin-top: 8px;
   color: #aaa;
 }
-.menu {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
-  gap: 20px;
-  margin: 30px auto;
-  max-width: 1200px;
-}
 
 /* ===== Responsive ===== */
 @media(max-width:600px){
@@ -197,13 +190,7 @@ h1 {
 
 <div class="main-content">
   <div class="logo"></div>
-  <h1>📂 Locket </h1>
-
-  <div class="menu">
-  <div class="card" onclick="window.location.href='t9.html'">Locket_Wan</div>
-  <div class="card" onclick="window.location.href='t6.html'">Locket_Gold Android</div>
-  <div class="card" onclick="window.location.href='t10.html'">Locket_IP</div>
-  </div>
+  <h1>📂 Locket_IP</h1>
 
   <div class="container">
     <div class="grid" id="file-grid"></div>
@@ -249,6 +236,41 @@ function showToast(msg) {
 </script>
 
 <script>
+// Link JSON
+const jsonURL = "https://raw.githubusercontent.com/ZOKOTV/download-files/refs/heads/main/locketIP?t=" + new Date().getTime();
+
+async function loadFiles() {
+  try {
+    const res = await fetch(jsonURL);
+    const files = await res.json();
+    const grid = document.getElementById("file-grid");
+    grid.innerHTML = "";
+
+    files.forEach(file => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const nameDiv = document.createElement("div");
+      nameDiv.className = "filename";
+      nameDiv.innerHTML = `<i class="fas fa-file-alt"></i> ${file.name}`;
+
+      const downloadLink = document.createElement("a");
+      downloadLink.className = "download-btn";
+      downloadLink.href = file.url;
+      downloadLink.download = "";
+      downloadLink.target = "_blank";
+      downloadLink.textContent = "⬇ Tải xuống";
+
+      card.appendChild(nameDiv);
+      card.appendChild(downloadLink);
+      grid.appendChild(card);
+    });
+  } catch (err) {
+    console.error("Không tải được JSON:", err);
+    document.getElementById("file-grid").innerHTML = "<p style='color:red;'>⚠ Không tải được danh sách file!</p>";
+  }
+}
+
 window.onload = loadFiles;
 
 // Logo click về index.html
