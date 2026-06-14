@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="icon.png">
+<title>Trandoi</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* ===== Body & Flex layout ===== */
+body {
+  font-family: 'Orbitron', Arial, sans-serif;
+  background: linear-gradient(135deg, #0b0b0b, #1c1c1c);
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Nội dung chính */
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* ===== Logo ===== */
+.logo {
+  width: 120px;
+  height: 120px;
+  margin: 20px auto;
+  border-radius: 50%;
+  background: url('icon.png') no-repeat center center;
+  background-size: cover;
+  box-shadow: 0 0 15px #fff;
+  transition: box-shadow 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+.logo:hover {
+  box-shadow: 0 0 30px #fff, 0 0 60px #ccc;
+  transform: scale(1.1);
+}
+
+/* ===== Header ===== */
+h1 { 
+  margin-top: 10px; 
+  font-size: 2.5em; 
+  color: #fff; 
+  text-shadow: 0 0 12px #fff; 
+}
+
+/* ===== Container & Grid ===== */
+.container {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 15px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+  gap: 20px;
+}
+
+/* ===== Card ===== */
+.card {
+  background: #111;
+  border-radius: 12px;
+  box-shadow: 0 0 12px #444;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  transition: all 0.3s;
+  border: 2px solid #444;
+}
+.card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 0 25px #fff, 0 0 40px #ccc;
+  border-color: #fff;
+}
+
+/* ===== File name ===== */
+.filename {
+  font-weight: bold;
+  font-size: 16px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-shadow: 0 0 6px #ccc;
+}
+.filename i {
+  font-size: 18px;
+  color: #fff;
+}
+
+/* ===== Download button ===== */
+.download-btn {
+  display: inline-block;
+  padding: 12px 15px;
+  background-color: #111;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 14px;
+  box-shadow: 0 0 8px #fff;
+  transition: all 0.3s ease;
+}
+.download-btn:hover {
+  background-color: #fff;
+  color: #000;
+  box-shadow: 0 0 20px #fff, 0 0 40px #ccc;
+  transform: scale(1.05);
+}
+
+/* ===== Back button ===== */
+.back-btn-container { text-align: center; margin: 30px 0; }
+.back-btn {
+  display: inline-block;
+  padding: 12px 25px;
+  background-color: #111;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.back-btn:hover {
+  background-color: #fff;
+  color: #000;
+  box-shadow: 0 0 20px #fff, 0 0 40px #ccc;
+  transform: scale(1.05);
+}
+
+/* ===== Toast ===== */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background-color: #fff;
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #fff;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 9999;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+
+/* ===== Footer kiểu T5 ===== */
+.footer { 
+  margin-top: 40px; 
+  font-size: 0.9em; 
+  color: #aaa; 
+  text-align: center;
+}
+.footer .social-links a { 
+  color: #fff; 
+  margin: 0 10px; 
+  text-decoration: none; 
+  font-size: 1.2em;
+  transition: all 0.3s ease; 
+}
+.footer .social-links a:hover { 
+  color: #00ffff;  
+  text-shadow: 0 0 8px #00ffff, 0 0 16px #00ffff;
+}
+.footer p {
+  margin-top: 8px;
+  color: #aaa;
+}
+
+/* ===== Responsive ===== */
+@media(max-width:600px){
+  h1 { font-size: 1.8em; }
+  .card { padding: 14px; }
+  .download-btn { width: 100%; padding: 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="main-content">
+  <div class="logo"></div>
+  <h1>📂 Locket </h1>
+
+  <div class="container">
+    <div class="grid" id="file-grid"></div>
+  </div>
+
+  <div class="back-btn-container">
+    <a href="index.html" class="back-btn">← Quay lại</a>
+  </div>
+</div>
+
+<div class="toast" id="toast">Đang tải...</div>
+
+<!-- ===== Footer giống T5 ===== -->
+<div class="footer">
+  <div class="social-links">
+    <a href="https://www.tiktok.com/@trandoii" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
+    <a href="https://www.youtube.com/@zokotvcn" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
+    <a href="https://www.facebook.com/doi.tran.510812/?locale=vi_VN" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
+    <!-- Email: copy trực tiếp, không chuyển trang -->
+    <a class="link-btn" onclick="copyText('trandoi459@gmail.com', '✅ Đã sao chép Email!')">
+      <i class="fas fa-envelope"></i> Email
+    </a>
+  </div>
+  <p>© 2025 - Cre: Tran Van Doi</p>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+function copyText(text, message) {
+  navigator.clipboard.writeText(text)
+    .then(() => showToast(message || "✅ Đã sao chép!"))
+    .catch(() => showToast("❌ Không thể sao chép!"));
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+</script>
+
+<script>
+// Link JSON
+const jsonURL = "https://raw.githubusercontent.com/ZOKOTV/download-files/refs/heads/main/locket?t=" + new Date().getTime();
+
+async function loadFiles() {
+  try {
+    const res = await fetch(jsonURL);
+    const files = await res.json();
+    const grid = document.getElementById("file-grid");
+    grid.innerHTML = "";
+
+    files.forEach(file => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const nameDiv = document.createElement("div");
+      nameDiv.className = "filename";
+      nameDiv.innerHTML = `<i class="fas fa-file-alt"></i> ${file.name}`;
+
+      const downloadLink = document.createElement("a");
+      downloadLink.className = "download-btn";
+      downloadLink.href = file.url;
+      downloadLink.download = "";
+      downloadLink.target = "_blank";
+      downloadLink.textContent = "⬇ Tải xuống";
+
+      card.appendChild(nameDiv);
+      card.appendChild(downloadLink);
+      grid.appendChild(card);
+    });
+  } catch (err) {
+    console.error("Không tải được JSON:", err);
+    document.getElementById("file-grid").innerHTML = "<p style='color:red;'>⚠ Không tải được danh sách file!</p>";
+  }
+}
+
+window.onload = loadFiles;
+
+// Logo click về index.html
+document.querySelector('.logo').addEventListener('click', () => {
+  window.location.href = 'index.html';
+});
+</script>
+
+</body>
+</html>
