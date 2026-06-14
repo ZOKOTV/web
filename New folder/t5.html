@@ -234,9 +234,9 @@ const accounts = [
   { username: "admin", password: "doi12c1" },
   { username: "doi", password: "2008" },
   { username: "12c1", password: "12" },
-  { username: "khang", password: "1903" },
-  { username: "tramm", password: "2002" },
-  { username: "trandoi", password: "2008" }
+  { username: "#", password: "#" },
+  { username: "#", password: "#" },
+  { username: "Btram", password: "1772008" }
 ];
 
 // Login form
@@ -294,7 +294,18 @@ async function loadFiles() {
       downloadLink.href = file.url;
       downloadLink.download = "";
       downloadLink.target = "_blank";
-      downloadLink.textContent = "⬇ Tải xuống";
+      downloadLink.textContent = file.buttonText || "⬇ Tải xuống";
+
+if(file.color){
+    downloadLink.style.borderColor = file.color;
+    downloadLink.style.boxShadow = `0 0 10px ${file.color}`;
+}
+
+
+if(file.color){
+    downloadLink.style.borderColor = file.color;
+    downloadLink.style.boxShadow = `0 0 10px ${file.color}`;
+}
       card.appendChild(nameDiv);
       card.appendChild(downloadLink);
       grid.appendChild(card);
